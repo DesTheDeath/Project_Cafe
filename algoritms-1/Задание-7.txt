@@ -1,0 +1,61 @@
+Random rand = new Random();
+int floor = rand.Next(1, 10);
+while (true)
+{
+    VisualElev(floor);
+    Console.WriteLine("");
+    Console.WriteLine($"Текущий этаж: {floor}");
+    Console.WriteLine("Введите этаж");
+    int num = int.Parse(Console.ReadLine());
+    if (num > 9 || num < 1)
+        continue;
+    if (num == 0)
+        break;
+    floor = Elevator(floor,num);
+    Console.Clear();
+}
+
+
+
+static int Elevator(int floor, int newfloor)
+{
+    Console.WriteLine($"");
+    Console.WriteLine($"Лифт движется с {floor} до {newfloor}");
+    Console.WriteLine("Двери закрываются");
+    Thread.Sleep(300);
+    int res = newfloor - floor;
+    int step;
+    if (res > 0)
+        step = 1;
+    else
+        step = -1;
+    while (floor != newfloor)
+    {
+        Thread.Sleep(500);
+        floor += step;
+        Console.Clear();
+        VisualElev(floor);
+        Console.WriteLine(floor);
+        Console.WriteLine(step);
+        Thread.Sleep(200);
+    }
+    Console.WriteLine("");
+    Console.WriteLine("Двери открываются");
+    Thread.Sleep(1000);
+    return floor;
+}
+
+static void VisualElev(int num)
+{
+    Console.WriteLine("[-----------]");
+    for (int i = 9; i >= 1; i--)
+    {
+        string elev;
+        if (i == num)
+            elev = "  [_] ";
+        else
+            elev = "   |  ";
+        Console.WriteLine($"[ {i}: {elev} ]");
+    }
+    Console.WriteLine("[-----------]");
+}
