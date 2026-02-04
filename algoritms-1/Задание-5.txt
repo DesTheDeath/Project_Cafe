@@ -1,0 +1,22 @@
+int result = 0;
+List<string> quest1 = new List<string> { "Кто из млекопитающих умеет летать", "Белка", "Белка-летяга", "Летучая мышь", "3" };
+List<string> quest2 = new List<string> { "Кто из животных имеет самый громкий голос", "Синий кит", "Лев", "Слон", "1" };
+List<string> quest3 = new List<string> { "Какая птица умеет летать задом наперёд", "Орел", "Колибри", "Попугай", "2" };
+
+List<List<string>> qustes = new List<List<string>>() {quest1,quest2,quest3};
+
+foreach (List<string> que in qustes)
+{
+    Console.WriteLine($"{que[0]}");
+    Console.WriteLine($"1 - {que[1]} 2 - {que[2]} 3 - {que[3]}");
+    Console.Write("Ответ: ");
+    string res = Console.ReadLine();
+    if (que[4] == res)
+        result = result + 1;
+    Console.WriteLine();
+}
+
+if (result == 0) Console.WriteLine("Нужно повторить материал");
+else if (result == 1) Console.WriteLine("Неплохо");
+else if (result == 2) Console.WriteLine("Хорошо");
+else Console.WriteLine("Отлично");

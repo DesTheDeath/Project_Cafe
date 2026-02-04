@@ -1,0 +1,19 @@
+double bal = 10000;
+double limit = 3000;
+while (true) 
+{
+    Console.WriteLine($"Баланс: {bal}");
+    Console.WriteLine($"Лимит снятия: {limit}");
+    int vvod = int.Parse(Console.ReadLine());
+    if (vvod % 100 != 0)
+        Console.WriteLine("Не кратна 100");
+    else if (vvod > bal)
+        Console.WriteLine("Введенная сумма превышает баланс счета");
+    else if (vvod > limit)
+        Console.WriteLine("Превышен лимит");
+    else
+    {
+        bal -= vvod;
+        Console.WriteLine($"Снято: {vvod}");
+    }
+}

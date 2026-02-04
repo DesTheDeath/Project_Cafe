@@ -1,0 +1,54 @@
+Console.WriteLine("Введите загаданое слово");
+string word_res = Console.ReadLine().ToUpper();
+int heart = word_res.Length;
+
+List<string> letters = new List<string>();
+string result = "";
+
+for (int i = 0; i < word_res.Length; i++)
+{
+    letters.Add(word_res[i].ToString());
+    result += "-";
+}
+
+bool end = false;
+
+
+
+while (end == false)
+{
+    string log = "";
+    Console.WriteLine($"{result}");
+    Console.WriteLine("Введите букву");
+    string word = Console.ReadLine();
+    log = result;
+    result = "";
+
+    for (int i = 0; i < letters.Count; i++)
+    {
+        if (word.ToLower() == letters[i].ToLower())
+        {
+            result = result + letters[i];
+            letters[i] = "+";
+        }
+        else
+            result = result + log[i];
+
+    }
+    if (log == result)
+    {
+        heart -= 1;
+        Console.WriteLine($"Неправильная буква. Осталось попыток {heart}");
+    }
+    if (result == word_res)
+    {
+        end = true;
+        Console.WriteLine($"Вы отгадали слово: {result}");
+    }
+    else if (heart == 0)
+    {
+        end = true;
+        Console.WriteLine($"Вы не отгадали слово. Загаданное слово было: {word_res}");
+    }
+}
+

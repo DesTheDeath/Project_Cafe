@@ -1,0 +1,25 @@
+int[] list = new int[10];
+Random rand = new Random();
+for (int i = 0; i < list.Length; i++)
+{
+    list[i] = rand.Next(1, 20);
+    Console.Write(list[i] + " ");
+}
+Console.WriteLine();
+Console.WriteLine("Введите число:");
+int vvod = int.Parse(Console.ReadLine());
+
+bool result = true;
+for (int i = 0; i < list.Length; i++)
+{
+    if (list[i] == vvod && result != false)
+    {
+        Console.WriteLine($"{i}");
+        result = false;
+    }
+}
+if (result)
+    Console.WriteLine("Не найдено");
+
+
+нужно через while
