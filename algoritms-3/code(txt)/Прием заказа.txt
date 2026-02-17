@@ -1,0 +1,58 @@
+Product[] products = new Product[]
+{
+    new Product { Name = "Ноутбук", Count = 1, Price = 100000, Sale = 20 },
+    new Product { Name = "Мышь", Count = 2, Price = 2000, Sale = 15 },
+    new Product { Name = "Клавиатура", Count = 1, Price = 3000, Sale = 25 }
+};
+
+int[] sklad = { 5, 20, 10 };
+int summ = 0;
+int min = 2000;
+bool order = true;
+
+for (int i = 0; i < products.Length; i++)
+{
+    if (products[i].Count > sklad[i])
+    {
+        Console.WriteLine($"Товар {products[i].Name} отсутствует. Доступно: {sklad[i]}");
+        order = false;
+    }
+}
+
+if (!order)
+{
+    Console.WriteLine("Заказ отклонён: товары отсутствуют на складе");
+    return;
+}
+
+for (int i = 0; i < products.Length; i++)
+{
+    int price_sale = products[i].Price - (products[i].Price * products[i].Sale / 100);
+    summ += price_sale * products[i].Count;
+}
+
+Console.WriteLine($"Сумма со скидкой: {summ} руб.");
+
+if (summ < min)
+{
+    Console.WriteLine($"Заказ отклонён: минимальная сумма заказа {min} руб.");
+    return;
+}
+
+Console.WriteLine("Заказ подтвержден");
+Console.WriteLine($"К оплате: {summ} руб.");
+Console.WriteLine();
+Console.WriteLine("Состав заказа:");
+
+for (int i = 0; i < products.Length; i++)
+{
+    int price_sale = products[i].Price - (products[i].Price * products[i].Sale / 100);
+    Console.WriteLine($"- {products[i].Name}: {products[i].Count} шт");
+}
+class Product
+{
+    public string Name { get; set; }
+    public int Count { get; set; }
+    public int Price { get; set; }
+    public int Sale { get; set; }
+}

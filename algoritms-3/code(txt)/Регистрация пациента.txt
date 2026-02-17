@@ -1,0 +1,132 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Pacient
+{
+    public string Name { get; set; }
+    public string Surname { get; set; }
+    public string Patronymic { get; set; }
+    public string Policy { get; set; }
+    public string Phone { get; set; }
+    public int Doc { get; set; }
+};
+
+class Doctor
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Surname { get; set; }
+};
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        List<Doctor> doctors = new List<Doctor>();
+        List<Pacient> pacients = new List<Pacient>();
+
+        doctors = new List<Doctor> 
+        {
+            new Doctor { Id = 1, Surname = "Петров", Name = "Петр" },
+            new Doctor { Id = 2, Surname = "Сидоров", Name = "Сидр"  },
+            new Doctor { Id = 3, Surname = "Иванов", Name = "Иван" }
+        };
+
+        pacients = new List<Pacient>
+        {
+            new Pacient
+            {
+                Surname = "Иванов",
+                Name = "Иван",
+                Patronymic = "Иванович",
+                Policy = "123456789",
+                Phone = "+71234567890",
+                Doc = 1
+            },
+            new Pacient
+            {
+                Surname = "Петрова",
+                Name = "Мария",
+                Patronymic = "Сергеевна",
+                Policy = "987654321",
+                Phone = "+79876543210",
+                Doc = 2
+            }
+        };
+
+        Console.WriteLine("Введите Полис/ФИО ");
+        string input = Console.ReadLine();
+        string[] fio = input.Split(" ");
+
+        var pac = pacients.FirstOrDefault(p => fio[1] == p.Surname || input == p.Policy);
+        if (pac != null)
+        {
+            Console.WriteLine($"Текущие данные пациента:");
+            Console.WriteLine($"ФИО: {pac.Surname} {pac.Name} {pac.Patronymic}");
+            Console.WriteLine($"Полис: {pac.Policy}");
+            Console.WriteLine($"Телефон: {pac.Phone}");
+            
+            var doctor = doctors.FirstOrDefault(d => d.Id == pac.Doc);
+            Console.WriteLine($"Врач: {doctor.Surname} {doctor.Name}");
+
+            while (true)
+            {
+                Console.WriteLine("Обновление контактов:");
+                Console.WriteLine("1 - Телефон; 2 - Прикрепить врача; 3 - Выход");
+                string choise = Console.ReadLine();
+                
+                if (choise == "1")
+                {
+                    Console.WriteLine("Введите телефон:");
+                    pac.Phone = Console.ReadLine();
+                }
+                else if (choise == "2")
+                {
+                    Console.WriteLine("Выберите врача: ");
+                    for (int i = 0; i < doctors.Count; i++)
+                        Console.WriteLine($"{i + 1} - {doctors[i].Surname} {doctors[i].Name}");
+
+                    int doc = int.Parse(Console.ReadLine());
+
+                    if (doc > 0 && doc <= doctors.Count)
+                    {
+                        pac.Doc = doctors[doc - 1].Id;
+                        Console.WriteLine("Врач успешно изменен");
+                    }
+                    else
+                        Console.WriteLine("Неверный выбор врача");
+                }
+                else if (choise == "3")
+                    break;
+                else
+                    Console.WriteLine("Нет такой команды");
+            }
+
+            Console.WriteLine("Данные пациента успешно обновлены.");
+        }
+        else
+        {
+            Pacient newPatient = new Pacient();
+
+            Console.WriteLine("\nВвод персональных данных нового пациента:");
+            Console.Write("Фамилия: ");
+            newPatient.Surname = Console.ReadLine();
+
+            Console.Write("Имя: ");
+            newPatient.Name = Console.ReadLine();
+
+            Console.Write("Отчество: ");
+            newPatient.Patronymic = Console.ReadLine();
+
+            Console.Write("Номер полиса: ");
+            newPatient.Policy = Console.ReadLine();
+
+            Console.Write("Телефон: ");
+            newPatient.Phone = Console.ReadLine();
+            
+            pacients.Add(newPatient);
+            Console.WriteLine("пациент добавлен");
+        }
+    }
+}

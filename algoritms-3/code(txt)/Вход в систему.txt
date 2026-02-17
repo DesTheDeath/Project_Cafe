@@ -1,0 +1,29 @@
+int attempt = 0;
+string dan_login = "admin";
+string dan_password = "1234";
+
+while (true)
+{
+    Console.WriteLine("Введите Логин:");
+    string login = Console.ReadLine();
+    Console.WriteLine("Введите Пароль:");
+    string password = Console.ReadLine();
+    if (attempt != 3)
+    {
+        if (login == dan_login && password == dan_password)
+        {
+            Console.WriteLine("Успеx");
+            break;
+        }
+        else
+        {
+            Console.WriteLine("Неверный пароль");
+            attempt++;
+        }
+    }
+    else
+    {
+        Console.WriteLine("Пользователь заблокирован");
+        break;
+    }
+}
