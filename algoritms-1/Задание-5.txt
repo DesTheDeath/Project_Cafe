@@ -1,0 +1,23 @@
+int result = 0;
+string file = File.ReadAllText("C:/Users/Пользователь/Desktop/Задачи 8/Алгоритм-1/words.txt");
+string[] qustes = file.Split('\n');
+foreach (string ques in qustes)
+{
+    string[] que = ques.Split(",");
+    Console.WriteLine($"{que[0]}");
+    Console.WriteLine($"1 - {que[1]} 2 - {que[2]} 3 - {que[3]}");
+    Console.Write("Ответ: ");
+    string res = Console.ReadLine();
+    if (que[4] == res)
+        result = result + 1;
+    Console.WriteLine();
+}
+
+if (result == 0)
+    Console.WriteLine("Нужно повторить материал");
+else if (result == 1) 
+    Console.WriteLine("Неплохо");
+else if (result == 2) 
+    Console.WriteLine("Хорошо");
+else 
+    Console.WriteLine("Отлично");
