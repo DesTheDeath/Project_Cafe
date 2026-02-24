@@ -1,0 +1,83 @@
+string[] times = { "10:00", "11:00", "14:00", "15:00", "16:00", "17:00", };
+string[] peoples = { "Куляков", "Смирнов", "Сазонов", "Ворсин", "Ситдикова", "Старикова" };
+string[] mesto = { "Кафе", "Бар", "Ресторан", "Магазин", "Парк", "ТЦ" };
+string[] ulik = { "мужчина в черном пальто", "женщина в черном пальто", "мужчина в белом пальто", 
+    "мужчина в черном пальто", "мужчина в черном пальто", "женщина в белом пальто" };
+
+bool[] log = new bool[6];
+int loss = 0;
+
+
+for (int i = 0; i < times.Length; i++)
+{
+    Console.WriteLine($"{times[i]} - {peoples[i]} в {mesto[i]} - {ulik[i]}");
+    log[i] = true;
+}
+Console.WriteLine();
+Console.WriteLine("Отфильтровать противоречия:");
+for (int I = 0; I < peoples.Length; I++) 
+{
+    for (int O = I + 1; O < mesto.Length; O++)
+    {
+            if (mesto[I] == mesto[O] && times[I] == times[O] && ulik[I] != ulik[O])
+            {
+                log[I] = false;
+                log[O] = false;
+                Console.Write($"Противоречие между {peoples[I]} и {peoples[O]} - ");
+                Console.WriteLine($"время {times[I]} между {ulik[I]} и {ulik[O]}");
+            }
+    }
+}
+Console.WriteLine();
+
+Console.WriteLine("Непротиворечивые показания:");
+for (int i = 0; i < times.Length; i++)
+{
+    if (log[i])
+        Console.WriteLine($"Время: {times[i]} - Место: {mesto[i]} Описание: {ulik[i]}");
+    else
+        loss++;
+}
+Console.WriteLine();
+
+Console.WriteLine("Маршрут подозреваемого");
+for (int i = 0; i < times.Length; i++)
+{
+    if (log[i])
+        Console.WriteLine($"{times[i]} - {mesto[i]}");
+}
+Console.WriteLine();
+
+Console.WriteLine("Пропуск времени");
+bool foundTime = false;
+for(int i = 0;i < times.Length - 1; i++)
+{
+    if (log[i] == true && log[i+1] == true)
+    {
+        int t1 = int.Parse(times[i].Split(':')[0]) * 60 + int.Parse(times[i].Split(':')[1]);
+        int t2 = int.Parse(times[i+1].Split(':')[0]) * 60 + int.Parse(times[i+1].Split(':')[1]);
+        int time = t2 - t1;
+        if (time > 90)
+        {
+            foundTime = true;
+            Console.WriteLine($"Пропуск между {times[i]} и {times[i + 1]}: {time} минут");
+            Console.WriteLine($"  с {mesto[i]} до {mesto[i + 1]} - на расследование");
+        }
+    }
+}
+if (!foundTime)
+{
+    Console.WriteLine("Белые пятны не обнаружены");
+}
+Console.WriteLine();
+
+Console.WriteLine("Отчет");
+int notloss = 0;
+for (int i = 0; i < log.Length; i++)
+{
+    if (log[i]) 
+        notloss++;
+}
+Console.WriteLine($"Всего показаний: {times.Length}");
+Console.WriteLine($"Достоверных: {notloss}");
+Console.WriteLine($"Противоречивых: {loss}");

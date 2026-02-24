@@ -1,0 +1,53 @@
+string[] proj = { "Боулинг сайт", "Мобильное приложение", "Мессенджер-бот", "сводка данных", "ИИ-бот" };
+int[] prior = { 1, 3, 1, 2, 3 };
+int[] price = { 40000, 30000, 60000, 20000, 15000};
+double[] roi = { 1.5, 2.0, 1.2, 1.8, 2.5 };
+bool[] person = { true, true, false, true, false };
+int utv_Proj = 0; 
+
+Console.WriteLine("Введите бюджет: ");
+int budget = int.Parse(Console.ReadLine());
+int ostatka = budget;
+bool[] utv = new bool[5];
+
+Console.WriteLine("Введите минимальное требование: ");
+int min_money = int.Parse(Console.ReadLine()); 
+
+for (int i = 0; i < 5; i++)
+{
+    if (person[i] && price[i] < min_money)
+        min_money = price[i];
+}
+
+if (budget < min_money)
+{
+    Console.WriteLine("Бюджет слишком мал для запуска любого проекта.");
+    return;
+}
+Console.WriteLine();
+for (int i = 3; i >= 1; i--)
+{
+    for (int j = 0; j < 5; j++)
+    {
+        if (prior[j] == i && person[j] && !utv[j])
+        {
+            if (price[j] <= ostatka)
+            {
+                ostatka -= price[j];
+                utv[j] = true;
+                utv_Proj += 1;
+                if (i == 3)
+                    Console.WriteLine($"{proj[j]} - Приоритет: высокий; Стоимость: {price[j]}");
+                if (i == 2)
+                    Console.WriteLine($"{proj[j]} - Приоритет: средний; Стоимость: {price[j]}");
+                if (i == 1)
+                    Console.WriteLine($"{proj[j]} - Приоритет: низкий; Стоимость: {price[j]}");
+            }
+        }
+    }
+}
+
+Console.WriteLine();
+Console.WriteLine($"Утверждено проектов: {utv_Proj}");
+Console.WriteLine($"Использованы средства: {budget - ostatka}");
+Console.WriteLine($"Остаток от бюджета: {ostatka}");

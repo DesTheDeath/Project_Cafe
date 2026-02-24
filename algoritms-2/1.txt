@@ -1,0 +1,112 @@
+string[] roms = { "Станция", "Зал", "Кухня", "Ванная", "Спальня"};
+string[] floorTypes = { "", "паркет", "плитка", "ковер", "плитка" };
+int[,] adjacency = {
+            {0, 1, 0, 1, 0},
+            {1, 0, 1, 1, 0},
+            {0, 1, 0, 0, 1},
+            {1, 1, 0, 0, 0},
+            {0, 0, 1, 0, 0}
+};
+bool[] cleanes = new bool[roms.Length];
+cleanes[0] = true;
+int position = 0;
+int accum = 100;
+bool end = true;
+
+while (end)
+{
+    int count = 0;
+    for (int i = 0; i < roms.Length; i++)
+    {
+        if (cleanes[i])
+            count++;
+        if (count == roms.Length)
+            end = false;
+    }
+
+    if (accum <= 20 && position != 0)
+    {
+        Console.WriteLine("Аккумулятор достиг или ниже 20%. Возвращаемся на зарядную станцию");
+        position = 0;
+        accum = 100;
+        Thread.Sleep(200);
+        Console.Write("Батарея: [ ");
+        for (int i = 0; i < 100; i+=10)
+        {
+            Console.Write("=");
+            Thread.Sleep(300);
+        }
+        Console.Write(" ]");
+        Console.WriteLine();
+    }
+    Console.WriteLine($"Точка старта: {roms[position]}, аккумулятор {accum}%");
+
+    int next = -1;
+    for (int i = 0; i < roms.Length; i++)
+    {
+        if (!cleanes[i] && adjacency[position, i] == 1)
+        {
+            next = i;
+            break;
+        }
+    }
+    if (next == -1)
+    {
+        Console.WriteLine("Нет доступных комнат. Возвращаемся на базу.");
+        position = 0;
+        accum -= 10;
+        Thread.Sleep(500);
+        continue;
+    }
+    Console.WriteLine($"Двигаемся в {roms[next]} ({floorTypes[next]})...\n");
+    position = next;
+    accum -= 5;
+    Thread.Sleep(500);
+
+    cleanes[position] = true;
+
+    if (floorTypes[position] == "ковер")
+    {
+        Console.WriteLine();
+        Console.WriteLine("Тип: ковер");
+        Console.WriteLine("Операция: сухой уборки");
+        Thread.Sleep(1500);
+        Console.WriteLine("Территория зачищена");
+        Console.WriteLine();
+        accum -= 15;
+    }
+    else if (floorTypes[position] == "плитка")
+    {
+        Console.WriteLine();
+        Console.WriteLine($"Тип: плитка");
+        Console.WriteLine("Проверяем датчик влажности");
+        Thread.Sleep(500);
+        Random rand = new Random();
+        int woter = rand.Next(1,10);
+        if (woter > 5)
+        {
+            Console.WriteLine("Плитка мокрая. Пропуск");
+            Console.WriteLine();
+        }
+        else
+        {
+            accum -= 20;
+            Console.WriteLine("Операция: влажная уборка");
+            Thread.Sleep(1500);
+            Console.WriteLine("Территория зачищена");
+            Console.WriteLine();
+
+        }
+    }
+    else if (floorTypes[position] == "паркет")
+    {
+        accum -= 15;
+        Console.WriteLine();
+        Console.WriteLine("Тип: паркет");
+        Console.WriteLine("Операция: бережная уборка");
+        Thread.Sleep(1500);
+        Console.WriteLine("Территория зачищена");
+        Console.WriteLine();
+    }
+}
+Console.WriteLine("Все комнаты убраны!");
