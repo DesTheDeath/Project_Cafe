@@ -1,0 +1,110 @@
+string[] otzivs = {
+    "Телефон супер! Экран отличный, батарея хорошая.",
+    "Ужасный экран, треснул сразу. Недоволен покупкой.",
+    "Доставка быстрая, телефон пришел целый.",
+    "Батарея садится очень быстро, плохо держит заряд.",
+    "Отличный телефон, экран хороший, доставка порадовала.",
+    "Треснул экран при падении. Очень плохое качество.",
+    "Доставка долгая, ужасная работа курьеров.",
+    "Батарея отличная, супер держит целый день!",
+    "Экран тухнет и мерцает, недоволен качеством.",
+    "Телефон хороший, но батарея слабовата.",
+    "Отличная доставка, привезли быстро! Телефон супер!",
+    "Экран телефона разбился, ужасное качество стекла.",
+    "Батарея отличная, телефон работает долго. Хорошо!",
+    "Плохой экран, нечеткое изображение и блики.",
+    "Доставка ужасная, телефон шел 2 недели."
+};
+
+string[] categ = { "батарея", "экран", "доставка", "телефон" };
+
+int[] goods = new int[categ.Length];
+int[] bads = new int[categ.Length];
+
+Console.WriteLine("Анализ отзывов:");
+
+for (int i = 0; i < otzivs.Length; i++)
+{
+    bool good = false;
+    bool bad = false;
+    Console.WriteLine($"{i + 1}: {otzivs[i]}");
+    string ot = otzivs[i].ToLower();
+
+    if (ot.Contains("отличн") || ot.Contains("хорош") || ot.Contains("супер") || ot.Contains("быстр")) good = true;
+
+    if (ot.Contains("ужасн") || ot.Contains("плох") || ot.Contains("тресн") || ot.Contains("недовол") || ot.Contains("садит") || ot.Contains("тухн")) bad = true;
+
+    for (int j = 0; j < categ.Length; j++)
+    {
+        if (ot.Contains(categ[j]))
+        {
+            if (good)
+            {
+                goods[j]++;
+                Console.WriteLine($"{categ[j]} - позитвный отзыв");
+            }
+            if (bad)
+            {
+                bads[j]++;
+                Console.WriteLine($"{categ[j]} - негативный отзыв");
+            }
+        }
+    }
+    Console.WriteLine();
+}
+
+Console.WriteLine("Количество позитивных и негативных отзывов категории:");
+for (int i = 0; i < categ.Length; i++)
+    Console.WriteLine($"{categ[i]}: good = {goods[i]} | bad = {bads[i]}");
+Console.WriteLine();
+
+int[] cat_count = new int[categ.Length];
+
+Console.WriteLine("ТОП проблемных:");
+
+for (int i = 0; i < categ.Length; i++)
+    cat_count[i] = i;
+
+for (int i = 0; i < cat_count.Length - 1; i++)
+{
+    for (int j = i + 1; j < cat_count.Length; j++)
+    {
+        if (bads[cat_count[i]] < bads[cat_count[j]])
+        {
+            int nod = cat_count[i];
+            cat_count[i] = cat_count[j];
+            cat_count[j] = nod;
+        }
+    }
+}
+
+for (int i = 0; i < 3; i++)
+{
+    if (bads[cat_count[i]] > 0)
+        Console.WriteLine($"{i + 1}. {categ[cat_count[i]]} {bads[cat_count[i]]}");
+}
+Console.WriteLine();
+
+Console.WriteLine("ТОП лучших:");
+
+for (int i = 0; i < categ.Length; i++)
+    cat_count[i] = i;
+
+for (int i = 0; i < cat_count.Length - 1; i++)
+{
+    for (int j = i + 1; j < cat_count.Length; j++)
+    {
+        if (goods[cat_count[i]] < goods[cat_count[j]])
+        {
+            int nod = cat_count[i];
+            cat_count[i] = cat_count[j];
+            cat_count[j] = nod;
+        }
+    }
+}
+
+for (int i = 0; i < 3; i++)
+{
+    if (goods[cat_count[i]] > 0)
+        Console.WriteLine($"{i + 1}. {categ[cat_count[i]]} {goods[cat_count[i]]}");
+}
