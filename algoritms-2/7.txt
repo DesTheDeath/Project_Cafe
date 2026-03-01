@@ -1,0 +1,80 @@
+Console.WriteLine("Формат: устройство.действие(параметр)");
+Console.WriteLine();
+string[] devices = { "light", "thermostat", "blinds", "oven" };
+string[] actions = { "on", "off", "set", "open", "close" };
+DateTime now = DateTime.Now;
+while (true)
+{
+    Console.WriteLine();
+    Console.WriteLine("Введите команду (exit для выхода): ");
+    string command = Console.ReadLine().Trim();
+
+    if (command.ToLower() == "exit")
+        break;
+
+    if (command == "")
+    {
+        Console.WriteLine("Недопустимая команда");
+        continue;
+    }
+    string device = "";
+    string action = "";
+    string param = "";
+    bool parse = false;
+
+    if (command.Contains("."))
+    {
+        string[] parts = command.Split('.');
+        if (parts.Length >= 2)
+        {
+            parse = true;
+            device = parts[0].ToLower();
+            string deistvParam = parts[1];
+
+            if (deistvParam.Contains("(") && deistvParam.Contains(")"))
+            {
+                int open = deistvParam.IndexOf('(');
+                int close = deistvParam.IndexOf(')');
+                action = deistvParam.Substring(0, open).ToLower();
+                param = deistvParam.Substring(open + 1, close - open - 1);
+            }
+            else
+                action = deistvParam.ToLower();
+        }
+    }
+    bool device_val = false;
+    bool action_val = false;
+    if (!parse)
+    {
+        Console.WriteLine("Ошибка парсинга: неверный формат команды");
+        continue;
+    }
+    foreach (string d in devices)
+    {
+        if (d == device) 
+            device_val = true;
+    }
+    if (!device_val)
+    {
+        Console.WriteLine($"Ошибка: неизвестное устройство - {device}");
+        continue;
+    }
+    foreach (string a in actions)
+    {
+        if (a == action)
+            action_val = true;
+    }
+    if (!action_val)
+    {
+        Console.WriteLine($"Ошибка: недопустимое действие - {action}");
+        continue;
+    }
+    bool isNight = (now.Hour >= 23 || now.Hour < 6);
+
+    if (device == "oven" && action == "on" && isNight)
+    {
+        Console.WriteLine("Запрет включения духовки в ночное время");
+        continue;
+    }
+    Console.WriteLine($"Успешно - Время: {now:HH:mm:ss}");
+}

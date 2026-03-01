@@ -1,0 +1,41 @@
+Random rand = new Random();
+int lastTime = -10;
+bool person = false;
+DateTime now = DateTime.Now;
+
+if (now.Hour >= 23 || now.Hour < 6)
+{
+    Console.WriteLine("Ночное время. Режим: мигающий желтый сигнал");
+    return;
+}
+
+Console.WriteLine($"Текущее время: {now} Дневной режим работы");
+
+for (int i = 0; i < 3; i++)
+{
+    Console.WriteLine();
+    Console.WriteLine($"Цикл {i + 1}");
+    if (!person)
+        person = rand.Next(100) < 25;
+    if (person) Console.WriteLine("Обнаружен запрос пешехода");
+
+    if (rand.Next(100) < 15)
+    {
+        Console.WriteLine("Приоритет: обнаружен общественный транспорт");
+        Console.WriteLine("Процесс для автобуса зеленый 10 сек");
+        Console.WriteLine("Пешеходный запрос отложен");
+        continue;
+    }
+
+    if (person && i - lastTime >= 2)
+    {
+        Console.WriteLine("Зеленый для пешеходов 15 сек, красный для автомобилей");
+        person = false;
+        lastTime = i;
+    }
+    else
+    {
+        Console.WriteLine("Зеленый для автомобилей: 20 сек; Желтый - 3 сек; Красный - 10 сек");
+        if (person) Console.WriteLine("Запрос пешехода ожидает следующего цикла");
+    }
+}

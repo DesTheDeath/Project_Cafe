@@ -1,0 +1,108 @@
+Console.Write("Возраст: ");
+int age = int.Parse(Console.ReadLine());
+
+Console.Write("Ежемесячный доход: ");
+int income = int.Parse(Console.ReadLine());
+
+Console.Write("Ежемесячные траты: ");
+int expenses = int.Parse(Console.ReadLine());
+
+Console.Write("Сумма сбережения: ");
+int savings = int.Parse(Console.ReadLine());
+
+Console.WriteLine("Выберите цель:");
+Console.WriteLine("1 - Подушка безопасности");
+Console.WriteLine("2 - Покупка жилья");
+Console.WriteLine("3 - Пенсия");
+int func = int.Parse(Console.ReadLine());
+Console.WriteLine();
+
+
+int free = income - expenses;
+Console.WriteLine($"Свободные средства: {free} руб/мес");
+
+bool needPillow = (savings < expenses * 3);
+Console.WriteLine();
+if (needPillow)
+{
+    Console.WriteLine("Недостаточно подушки безопасности!");
+    Console.WriteLine($"Рекомендуется: {expenses * 3} руб (3 месяца расходов)");
+    Console.WriteLine("Сначала сформируйте подушку безопасности.");
+    func = 1;
+}
+
+string risk;
+if (age < 30)
+    risk = "высокий";
+else if (age < 50)
+    risk = "средний";
+else
+    risk = "низкий";
+
+Console.WriteLine($"\nВаш риск-профиль: {risk}");
+
+Console.WriteLine("\nРекомендуемое распределение активов:");
+
+if (func == 1)
+{
+    Console.WriteLine("Цель: Подушка безопасности");
+    Console.WriteLine("Вклады: 100%");
+    Console.WriteLine("Фонды: 0%");
+    Console.WriteLine("Акции: 0%");
+    Console.WriteLine("Облигации: 0%");
+    Console.WriteLine("\nСрок формирования: " + (expenses * 3 - savings) / free + " месяцев");
+}
+else if (func == 2)
+{
+    Console.WriteLine("Цель: Покупка жилья");
+    if (risk == "высокий")
+    {
+        Console.WriteLine("Вклады: 40%");
+        Console.WriteLine("Фонды: 30%");
+        Console.WriteLine("Акции: 20%");
+        Console.WriteLine("Облигации: 10%");
+    }
+    else if (risk == "средний")
+    {
+        Console.WriteLine("Вклады: 50%");
+        Console.WriteLine("Фонды: 25%");
+        Console.WriteLine("Акции: 10%");
+        Console.WriteLine("Облигации: 15%");
+    }
+    else
+    {
+        Console.WriteLine("Вклады: 60%");
+        Console.WriteLine("Фонды: 20%");
+        Console.WriteLine("Акции: 5%");
+        Console.WriteLine("Облигации: 15%");
+    }
+    Console.WriteLine();
+    Console.WriteLine("Учтена инфляция ~5% годовых для сохранения покупательной способности.");
+}
+else
+{
+    Console.WriteLine("Цель: Пенсия");
+    if (risk == "высокий")
+    {
+        Console.WriteLine("Вклады: 20%");
+        Console.WriteLine("Фонды: 40%");
+        Console.WriteLine("Акции: 30%");
+        Console.WriteLine("Облигации: 10%");
+    }
+    else if (risk == "средний")
+    {
+        Console.WriteLine("Вклады: 30%");
+        Console.WriteLine("Фонды: 35%");
+        Console.WriteLine("Акции: 20%");
+        Console.WriteLine("Облигации: 15%");
+    }
+    else
+    {
+        Console.WriteLine("Вклады: 40%");
+        Console.WriteLine("Фонды: 30%");
+        Console.WriteLine("Акции: 10%");
+        Console.WriteLine("Облигации: 20%");
+    }
+    Console.WriteLine();
+    Console.WriteLine("Учтена инфляция ~5% годовых для долгосрочного роста.");
+}
